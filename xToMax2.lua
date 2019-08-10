@@ -1,18 +1,52 @@
 --Config Area
 
-local xToMax2Height = 28
+local xToMax2Height = 20
 local xToMax2Width = 500
 local xToMax2Anchor = {"CENTER", UIPARENT, "CENTER", 0, -275}
 local xToMax2Point = {"CENTER", "xToMax2BarFrame","CENTER", 0, 0}
 local xToMax2Texture = "Interface\\TargetingFrame\\UI-StatusBar"
 local xToMax2Font = [[Fonts\FRIZQT__.TTF]]
-local xToMax2FontSize = 15
+local xToMax2FontSize = 12
 local xToMax2FontFlags = "NONE"
 local xToMax2Color = { r = 0, g = 1, b = 0 }
+local xToMax2SliderHeightName = "Height"
+local xToMax2SliderHeightTemplate = "OptionsSliderTemplate"
 
 function comma_value(n)
   return tostring(math.floor(n)):reverse():gsub("(%d%d%d)","%1,"):gsub(",(%-?)$","%1"):reverse()
 end
+--[[
+--here be the interface options panel
+xToMax2Panel = CreateFrame("Frame", "xToMax2Panel", UIParent);
+xToMax2Panel.name = "xToMax2";
+
+--Making the sliders
+xToMax2HeightSlider = CreateFrame("Slider", xToMax2HeightSlider, xToMax2Panel, xToMax2SliderHeightTemplate)
+xToMax2HeightSlider:SetPoint("CENTER",0,0)
+xToMax2HeightSlider.textLow = _G[xToMax2SliderHeightName.."Low"]
+xToMax2HeightSlider.textHigh = _G[xToMax2SliderHeightName.."High"]
+xToMax2HeightSlider.text = _G[xToMax2SliderHeightName.."Text"]
+xToMax2HeightSlider:SetMinMaxValues(1,100)
+xToMax2HeightSlider.minValue, xToMax2HeightSlider.maxValue = xToMax2HeightSlider:GetMinMaxValues()
+--xToMax2HeightSlider.textLow:SetText(xToMaxHeightSlider.minValue)
+--xToMax2HeightSlider.textHigh:SetText(100)
+--xToMax2HeightSlider.text:SetText(xToMax2SliderHeightName)
+xToMax2HeightSlider:SetValue(50)
+xToMax2HeightSlider:SetValueStep(1)
+xToMax2HeightSlider:SetScript("OnValueChanged", function(self,event,arg1) xToMax2ResizeHeight(event) end)
+
+InterfaceOptions_AddCategory(xToMax2Panel);
+
+-- Functions to resize the bar
+function xToMax2ResizeHeight(value)
+	xToMax2Height = value
+end
+
+function xToMax2ResizeWidth(value)
+	xToMax2Width = value
+end
+--]]
+
 
 --Creating the Frame
 local xToMax2BarFrame = CreateFrame("Frame", "xToMax2BarFrame", UIParent)
@@ -22,6 +56,7 @@ xToMax2BarFrame:SetWidth(xToMax2Width)
 xToMax2BarFrame:SetPoint(unpack(xToMax2Anchor))
 xToMax2BarFrame:EnableMouse(true)
 xToMax2BarFrame:SetMovable(true)
+xToMax2BarFrame:SetResizable(true)
 xToMax2BarFrame:SetClampedToScreen(true)
 
 --Creating background and border
@@ -49,20 +84,37 @@ Text:SetFont(xToMax2Font, xToMax2FontSize, xToMax2FontFlags)
 Text:SetPoint("CENTER", xToMax2Bar, "CENTER",0,1)
 Text:SetAlpha(1)
 
---Making the bar movable
+--Making the bar movable and sizable
 xToMax2BarFrame:SetScript("OnMouseDown", function(self, button)
+	if not IsShiftKeyDown() then return end
+	
+	if button == "LeftButton" then
+		self:StartMoving()
+		self.isMoving = true
+	--elseif button == "RightButton" then
+		--self:StartSizing("BOTTOMRIGHT")
+		--self.isSizing = true
+	end
+	
+--[[
   if button == "LeftButton" and (IsShiftKeyDown()) and not self.isMoving then
    self:StartMoving();
    self.isMoving = true;
    --print("moving!");
   end
+  
+ --]]
 end)
 
 xToMax2BarFrame:SetScript("OnMouseUp", function(self, button)
-  if button == "LeftButton" and (IsShiftKeyDown()) and self.isMoving then
+  if not IsShiftKeyDown() then return end
+  if button == "LeftButton" and self.isMoving then
    self:StopMovingOrSizing();
    self.isMoving = false;
    --print("Stopped moving");
+  elseif button == "RightButton" and self.isSizing then
+	self:StopMovingOrSizing();
+	self.isSizing = false
   end
 end)
 
