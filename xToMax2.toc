@@ -1,7 +1,6 @@
 ## Interface: 11302
 ## Title: xToMax2
 ## Author: Grumpington
-## Version: 1.0
-## SavedVariablesPerCharacter: xToMax2Height, xToMax2Width
+## Version: 0.1
 
 xToMax2.lua
