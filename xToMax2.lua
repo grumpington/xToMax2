@@ -1,7 +1,7 @@
 --Config Area
 
-local xToMax2Height = 28
-local xToMax2Width = 500
+xToMax2Height = 28
+xToMax2Width = 500
 local xToMax2Anchor = {"CENTER", UIPARENT, "CENTER", 0, -275}
 local xToMax2Point = {"CENTER", "xToMax2BarFrame","CENTER", 0, 0}
 local xToMax2Texture = "Interface\\TargetingFrame\\UI-StatusBar"
@@ -13,6 +13,13 @@ local xToMax2Color = { r = 0, g = 1, b = 0 }
 function comma_value(n)
   return tostring(math.floor(n)):reverse():gsub("(%d%d%d)","%1,"):gsub(",(%-?)$","%1"):reverse()
 end
+
+--Creating the Interface Options Frame and content
+xToMax2OptionsPanel = CreateFrame("Panel", "xToMax2OptionsPanel", UIParent)
+xToMax2OptionsPanel.name = "xToMax2"
+
+--Adding it to the interface panel
+InterfaceOptions_AddCategory(xToMax2OptionsPanel);
 
 --Creating the Frame
 local xToMax2BarFrame = CreateFrame("Frame", "xToMax2BarFrame", UIParent)
