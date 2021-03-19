@@ -53,7 +53,7 @@ Text:SetAlpha(1)
 --Making the bar movable and sizable
 xToMax2BarFrame:SetScript("OnMouseDown", function(self, button)
 	if not IsShiftKeyDown() then return end
-	
+
 	if button == "LeftButton" then
 		self:StartMoving()
 		self.isMoving = true
@@ -74,16 +74,16 @@ end)
 
 --Making the magic Happen
 local function UpdateStatus()
-	local xToMax2XPLevel = {0, 400, 1300, 2700, 4800, 7600, 11200, 15700, 21100, 27600, 35200, 44000, 54100, 65500, 78400, 92800, 108800, 126500, 145900, 167200, 190400, 215600, 242900, 272300, 304000, 338000, 374400, 413300, 454700, 499000, 546400, 597200, 651700, 710300, 773100, 840200, 911800, 987900, 1068700, 1154400, 1245100, 1340900, 1441900, 1548200, 1660000, 1777500, 1900700, 2029800, 2164900, 2306100, 2453600, 2607500, 2767900, 2935000, 3108900, 3289700, 3477600, 3672600, 3874900};
-	local xToMax2CurrentXP = UnitXP("player") + xToMax2XPLevel[UnitLevel("player")]
-	local xToMax2MaxXP = 4084700
-	local xToMax2PercXP = floor(xToMax2CurrentXP/xToMax2MaxXP*100)
-	
-	if UnitLevel("player") == 60 then
+		if UnitLevel("player") == 60 then
 		backdrop:Hide()
 		xToMax2Bar:Hide()
 		xToMax2BarFrame:Hide()
 	else
+        local xToMax2XPLevel = {0, 400, 1300, 2700, 4800, 7600, 11200, 15700, 21100, 27600, 35200, 44000, 54100, 65500, 78400, 92800, 108800, 126500, 145900, 167200, 190400, 215600, 242900, 272300, 304000, 338000, 374400, 413300, 454700, 499000, 546400, 597200, 651700, 710300, 773100, 840200, 911800, 987900, 1068700, 1154400, 1245100, 1340900, 1441900, 1548200, 1660000, 1777500, 1900700, 2029800, 2164900, 2306100, 2453600, 2607500, 2767900, 2935000, 3108900, 3289700, 3477600, 3672600, 3874900};
+        local xToMax2CurrentXP = UnitXP("player") + xToMax2XPLevel[UnitLevel("player")]
+        local xToMax2MaxXP = 4084700
+        local xToMax2PercXP = floor(xToMax2CurrentXP/xToMax2MaxXP*100)
+
 		xToMax2Bar:SetMinMaxValues(min(0, xToMax2CurrentXP), xToMax2MaxXP)
 		xToMax2Bar:SetValue(xToMax2CurrentXP)
 		Text:SetText(format("%s/%s (%s%%|cffb3e1ff|r)", comma_value(xToMax2CurrentXP), comma_value(xToMax2MaxXP), xToMax2PercXP))
